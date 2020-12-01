@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Vuforia;
 
 public class GameController : MonoBehaviour
 {
@@ -30,10 +31,17 @@ public class GameController : MonoBehaviour
     public GameObject GUIGameOverPanel;
     public GameObject GUIStartPanel;
     public GameObject Terrain;
+    public GameObject GUIGun;
 
     //control audio
     AudioSource audio;
     public AudioClip[] clips;
+
+    //aturan ronde
+    private int roundTargetScore = 3;
+    public int roundScore = 0;
+    private int scoreIncrement = 2;
+    public bool playerStarted = false;
 
     void Awake()
     {
@@ -41,5 +49,65 @@ public class GameController : MonoBehaviour
         {
             instance = this;
         }
+    }
+
+    void Start(){
+        playerScore = int.Parse(hitungTeks.text);
+        showStartPanel();
+        audio = GetComponent<AudioSource>();
+        hitungNyawa.text = nyawa.ToString();
+    }
+
+    private void showStartPanel(){
+        startPanel.SetActive(true);
+    }
+
+    private void hideStartPanel(){
+        startPanel.SetActive(false);
+    }
+
+    void Update(){
+        if(DefaultTrackableEventHandler.trueFalse == true){
+            hideStartPanel();
+            showItems();
+
+            if(playerStarted == false){
+                StartCoroutine(playRound());
+            }
+        }else {
+            showStartPanel();
+            hideItems();
+        }
+    }
+
+    public void showItems(){
+        GuiTeksSkor.SetActive(true);
+        GUITeksNyawa.SetActive(true);
+        GUITargetBidikan.SetActive(true);
+        GUITembak.SetActive(true);
+        GUIAnjing.SetActive(true);
+        GUITeksRonde.SetActive(true);
+        GUIGameOverPanel.SetActive(true);
+
+        Terrain.SetActive(true);
+        GUIGun.SetActive(true);
+    }
+
+    public void hideItems(){
+        GuiTeksSkor.SetActive(false);
+        GUITeksNyawa.SetActive(false);
+        GUITargetBidikan.SetActive(false);
+        GUITembak.SetActive(false);
+        GUIAnjing.SetActive(false);
+        GUITeksRonde.SetActive(false);
+        GUIGameOverPanel.SetActive(false);
+
+        Terrain.SetActive(false);
+        GUIGun.SetActive(false);
+    }
+
+    public IEnumerator playRound(){
+        yield return new WaitForSeconds(2f);
+        targetTeks.text = "Tembak "+TembakPerRonde+" burung";
     }
 }
