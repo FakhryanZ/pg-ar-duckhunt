@@ -27,10 +27,10 @@ public class targetcollider : DefaultTrackableEventHandler
 
     public void moveTarget(){
         Vector3 temp;
-        temp.x = Random.Range(-2.5f, 2.5f);
-        temp.y = Random.Range(0.4f, 0.8f);
-        temp.z = Random.Range(-2.5f, 2.5f);
-        transform.position = new Vector3 (temp.x, temp.y-6.5f, temp.z);
+        temp.x = Random.Range(-1.6f, 1.7f);
+        temp.y = Random.Range(-0.7f, -0.8f);
+        temp.z = Random.Range(-1.6f, 1.5f);
+        transform.position = new Vector3 (temp.x, temp.y, temp.z);
 
         if(DefaultTrackableEventHandler.trueFalse == true){
             RaycastController.instance.playSound(0);

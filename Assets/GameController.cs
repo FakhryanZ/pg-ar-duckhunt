@@ -130,6 +130,8 @@ public class GameController : MonoBehaviour
         yield return new WaitForSeconds(2f);
         targetTeks.text = "Tembak "+TembakPerRonde+" burung";
         playFX(0);
+
+        StartCoroutine(hideTeksRonde());
     }
 
     private IEnumerator hideTeksRonde(){
