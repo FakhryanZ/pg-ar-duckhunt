@@ -7,14 +7,6 @@ public class targetcollider : DefaultTrackableEventHandler
 {
     public static targetcollider instance;
 
-    void Start(){
-        Vector3 temp;
-        temp.x = 1.261f;
-        temp.y = 0.217f;
-        temp.z = -1.285f;
-        transform.position = new Vector3 (temp.x, temp.y, temp.z);
-    }
-
     void Awake(){
         if(instance == null){
             instance = this;
@@ -27,9 +19,9 @@ public class targetcollider : DefaultTrackableEventHandler
 
     public void moveTarget(){
         Vector3 temp;
-        temp.x = Random.Range(-1.6f, 1.7f);
-        temp.y = Random.Range(-0.7f, -0.8f);
-        temp.z = Random.Range(-1.6f, 1.5f);
+        temp.x = Random.Range(-1.8f, 1.7f);
+        temp.y = Random.Range(0.28f, 0.7f);
+        temp.z = Random.Range(-1.43f, 1.64f);
         transform.position = new Vector3 (temp.x, temp.y, temp.z);
 
         if(DefaultTrackableEventHandler.trueFalse == true){

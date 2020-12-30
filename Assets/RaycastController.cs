@@ -7,7 +7,6 @@ public class RaycastController : MonoBehaviour
 {
     public float maxDistanceRay = 100f;
     public static RaycastController instance;
-    public Text birdName;
     public Transform gunFlashTarget;
     public float fireRate = 1.6f;
     private bool nextShot = true;
@@ -21,7 +20,6 @@ public class RaycastController : MonoBehaviour
     void Start()
     {
         StartCoroutine(spawnNewBird());
-        playSound(2);   
     }
 
     // Update is called once per frame
@@ -52,9 +50,9 @@ public class RaycastController : MonoBehaviour
         newBird.transform.localScale = new Vector3(10f, 10f, 10f);
 
         Vector3 temp;
-        temp.x = Random.Range(-48f, 48f);
-        temp.y = Random.Range(10f, 50f);
-        temp.z = Random.Range(-48f, 48f);
+        temp.x = Random.Range(-1.8f, 1.7f);
+        temp.y = Random.Range(0.28f, 0.7f);
+        temp.z = Random.Range(-1.43f, 1.64f);
         newBird.transform.position = new Vector3(temp.x, temp.y, temp.z);
     }
 
@@ -73,12 +71,12 @@ public class RaycastController : MonoBehaviour
 
         GameController.instance.TembakPerRonde--;
 
-        int layer_mask = LayerMask.GetMask("bird_layer");
+        int layer_mask = LayerMask.GetMask("birdLayer");
         if(Physics.Raycast(ray,out hit, maxDistanceRay, layer_mask)){
             objName = hit.collider.gameObject.name;
-            birdName.text = objName;
+            Vector3 birdPosition = hit.collider.gameObject.transform.position;
 
-            if(objName == "BirdAsset(Clone)"){
+            if(objName == "Bird_Asset(Clone)"){
                 Destroy(hit.collider.gameObject);
 
                 StartCoroutine(spawnNewBird());
@@ -91,12 +89,15 @@ public class RaycastController : MonoBehaviour
         }
 
         GameObject gunFlash = Instantiate(Resources.Load("gunFlashSmoke", typeof(GameObject))) as GameObject;
-        gunFlash.transform.position = gunFlashTarget.transform.position;
+        gunFlash.transform.position = gunFlashTarget.position;
 
         yield return new WaitForSeconds(fireRate);
         
         nextShot = true;
+
+        GameObject[] smokeGroup = GameObject.FindGameObjectsWithTag("GunSmoke");
+        foreach (GameObject smoke in smokeGroup){
+            Destroy(smoke.gameObject);
+        }
     }
-
-
 }

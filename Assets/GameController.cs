@@ -5,17 +5,14 @@ using UnityEngine.UI;
 using Vuforia;
 using UnityEngine.SceneManagement;
 
-public class GameController : MonoBehaviour
+public class GameController : DefaultTrackableEventHandler
 {
     public static GameController instance;
     //komponen GUI
-    public GameObject startPanel;
     public int playerScore = 0;
     public Text hitungTeks;
     public Text hitungNyawa;
     public int ronde = 1;
-    public GameObject rondeTeks;
-    public Text jmlRonde;
     public Text teksJmlRonde;
     public Text targetTeks;
     public int TembakPerRonde = 3;
@@ -61,11 +58,11 @@ public class GameController : MonoBehaviour
     }
 
     private void showStartPanel(){
-        startPanel.SetActive(true);
+        GUIStartPanel.SetActive(true);
     }
 
     private void hideStartPanel(){
-        startPanel.SetActive(false);
+        GUIStartPanel.SetActive(false);
     }
 
     void Update(){
@@ -104,10 +101,7 @@ public class GameController : MonoBehaviour
         GUITeksNyawa.SetActive(true);
         GUITargetBidikan.SetActive(true);
         GUITembak.SetActive(true);
-        // GUIAnjing.SetActive(true);
-        // GUITeksRonde.SetActive(true);
-        GUIGameOverPanel.SetActive(true);
-        // hideStartPanel();
+        hideStartPanel();
         Terrain.SetActive(true);
         GUIGun.SetActive(true);
         tampilPeluru();
@@ -118,19 +112,16 @@ public class GameController : MonoBehaviour
         GUITeksNyawa.SetActive(false);
         GUITargetBidikan.SetActive(false);
         GUITembak.SetActive(false);
-        // GUIAnjing.SetActive(false);
-        // GUITeksRonde.SetActive(false);
-        GUIGameOverPanel.SetActive(false);
-        // hideStartPanel()
+        showStartPanel();
         Terrain.SetActive(false);
         GUIGun.SetActive(false);
     }
 
     public IEnumerator playRound(){
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1);
         targetTeks.text = "Tembak "+TembakPerRonde+" burung";
         playFX(0);
-
+        GUITeksRonde.SetActive(true);
         StartCoroutine(hideTeksRonde());
     }
 
@@ -140,11 +131,10 @@ public class GameController : MonoBehaviour
     }
 
     private IEnumerator hilangNyawa(){
-        yield return new WaitForSeconds(2);
         nyawa--;
         if(nyawa == 0){
             GUITembak.SetActive(false);
-            playFX(2);
+            playFX(1);
             GUIGameOverPanel.SetActive(true);
             skorGameOverTeks.text = playerScore.ToString();
             nyawa = 0;
@@ -157,6 +147,7 @@ public class GameController : MonoBehaviour
             GUITembak.SetActive(true);
             TembakPerRonde = 3;
         }
+        yield return new WaitForSeconds(0);
 
         hitungNyawa.text = nyawa.ToString();
     }
@@ -201,7 +192,7 @@ public class GameController : MonoBehaviour
     }
 
     private IEnumerator rondeBaru(){
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(2);
         ronde++;
         GUITeksRonde.SetActive(true);
         targetTeks.text = "Tembak "+roundTargetScore+ " burung";

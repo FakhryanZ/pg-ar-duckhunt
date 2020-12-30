@@ -48,6 +48,10 @@ public class controlScript : MonoBehaviour
         SceneManager.LoadScene("SampleScene");
     }
 
+    public void exitGame(){
+        Application.Quit();
+    }
+
     private void playSound(int sound){
         audio.clip = clips[sound];
         audio.Play();
